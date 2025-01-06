@@ -185,23 +185,138 @@
 //
 //
 //
-import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
+// import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
+
+// const App = () => {
+//   const [toggle, setToggle] = useState(false);
+//   const textRef = useRef();
+
+//   useEffect(() => {
+//     if (textRef.current && toggle) {
+//       const dimension = textRef.current.getBoundingClientRect();
+//       textRef.current.style.paddingTop = `${dimension.height}px`;
+//     }
+//   }, [toggle]);
+
+//   return (
+//     <>
+//       <button onClick={() => setToggle(!toggle)}>Toggle</button>
+//       {toggle && <h3 ref={textRef}>firey</h3>}
+//     </>
+//   );
+// };
+
+// export default App;
+
+//
+//
+//
+//======================================      UseMemo HOOK        ============================
+//
+//
+//
+//
+// import React, { useMemo, useState } from "react";
+
+// const App = () => {
+//   const [number, setNumber] = useState(0);
+//   const [dark, setDark] = useState(false);
+//   //
+//   const memoCalculation = useMemo(() => {
+//     return expensiveFunction(number);
+//   }, [number]);
+
+//   //
+//   // const calculation = expensiveFunction(number);    // can be removed after returning the function in USEMEMO hook
+//   const cssStyle = {
+//     backgroundColor: dark ? "black" : "white",
+//     color: dark ? "white" : "black",
+//   };
+//   return (
+//     <div style={cssStyle}>
+//       <input
+//         onChange={(e) => setNumber(e.target.valueAsNumber)}
+//         type="number"
+//         value={number}
+//       />
+//       <h2>Calculation : {memoCalculation}</h2>
+//       <button onClick={() => setDark(!dark)}>Toggle</button>
+//     </div>
+//   );
+// };
+// function expensiveFunction(num) {
+//   console.log("loop started");
+//   for (let i = 0; i < 1000000000; i++) {}
+//   return num;
+// }
+
+// export default App;
+
+//
+//
+// =================================      USE-CALLBACK HOOK         =========================
+//
+//
+//
+// import React, { useCallback, useState } from "react";
+// import PrintTable from "./component/PrintTable";
+
+// const App = () => {
+//   const [number, setNumber] = useState(1);
+//   const [darkTheme, setDarkTheme] = useState(false);
+//   //
+//   const calculateTable = useCallback(() => {
+//     return [number * 1, number * 2, number * 3, number * 4, number * 5];
+//   }, [number]);
+
+//   //
+
+//   const cssStyle = {
+//     backgroundColor: darkTheme ? "black" : "white",
+//     color: darkTheme ? "white" : "black",
+//   };
+//   //
+//   // const calculateTable = () => {
+//   //   return [number * 1, number * 2, number * 3, number * 4, number * 5];
+//   // };              // removed this  after using USECALLBACK hook
+//   //
+//   return (
+//     <div style={cssStyle}>
+//       <input
+//         type="number"
+//         value={number}
+//         onChange={(e) => setNumber(e.target.valueAsNumber)}
+//       />
+//       <PrintTable calculateTable={calculateTable} />
+//       <button onClick={() => setDarkTheme(!darkTheme)}>toggle</button>
+//     </div>
+//   );
+// };
+
+// export default App;
+//
+//
+//
+// ===========================             CUSTOM-HOOK            ========================
+//
+//
+//
+import React from "react";
+import UseFetch from "./component/customHooks/UseFetch";
 
 const App = () => {
-  const [toggle, setToggle] = useState(false);
-  const textRef = useRef();
-
-  useEffect(() => {
-    if (textRef.current && toggle) {
-      const dimension = textRef.current.getBoundingClientRect();
-      textRef.current.style.paddingTop = `${dimension.height}px`;
-    }
-  }, [toggle]);
-
+  const data = UseFetch("https://jsonplaceholder.typicode.com/users");
   return (
     <>
-      <button onClick={() => setToggle(!toggle)}>Toggle</button>
-      {toggle && <h3 ref={textRef}>firey</h3>}
+      {data.map((res) => {
+        return (
+          <h3 key={res.id}>
+            name: {res.name} <br />
+            zipcode: {res.address.zipcode} <br />
+            email: {res.email}
+          </h3>
+        );
+      })}
     </>
   );
 };
